@@ -108,6 +108,52 @@ public class MainActivity extends AppCompatActivity {
 
 
 
+    public void turnLightsOffPressed(View view) {
+        Toast.makeText(getApplicationContext(), "Off pressed", Toast.LENGTH_SHORT)
+                .show();
+
+
+
+        Async.executeAsync(ParticleCloudSDK.getCloud(), new Async.ApiWork<ParticleCloud, Object>() {
+            @Override
+            public Object callApi(@NonNull ParticleCloud particleCloud) throws ParticleCloudException, IOException {
+                // put your logic here to talk to the particle
+                // --------------------------------------------
+
+                // what functions are "public" on the particle?
+                Log.d(TAG, "Availble functions: " + mDevice.getFunctions());
+
+
+                List<String> functionParameters = new ArrayList<String>();
+                //functionParameters.add();
+
+                try {
+                    mDevice.callFunction("TurnOffLights", functionParameters);
+
+                } catch (ParticleDevice.FunctionDoesNotExistException e1) {
+                    e1.printStackTrace();
+                }
+
+
+                return -1;
+            }
+
+            @Override
+            public void onSuccess(Object o) {
+                // put your success message here
+                Log.d(TAG, "Success!");
+            }
+
+            @Override
+            public void onFailure(ParticleCloudException exception) {
+                // put your error handling code here
+                Log.d(TAG, exception.getBestMessage());
+            }
+        });
+
+
+
+    }
 
 
 
@@ -128,20 +174,24 @@ public class MainActivity extends AppCompatActivity {
              //   List<String> functionParameters = new ArrayList<String>();
 //                ArrayList<String> result = data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
                 //functionParameters.add();
-
+                ArrayList<String> result = data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
 
                 try {
 
+                 //   if (result.get(0).contains("turn on ligths")  ){
+
                     if (resultCode == RESULT_OK && data != null) {
 
-                        ArrayList<String> result = data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
 
-                        txvResult.setText(result.get(0));
-
+                        mDevice.callFunction("TurnOnLights", result);
 
 
-                    mDevice.callFunction("TurnOnLights", result);
+                        //  txvResult.setText(result.get(0));
+
                     }
+
+
+                  //  }
 
                 } catch (ParticleDevice.FunctionDoesNotExistException e1) {
                     e1.printStackTrace();
@@ -167,18 +217,18 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-        switch (requestCode) {
-            case 10:
-                if (resultCode == RESULT_OK && data != null) {
-
-                    ArrayList<String> result = data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
-
-                    txvResult.setText(result.get(0));
-
-
-                }
-                break;
-        }
+//        switch (requestCode) {
+//            case 10:
+//                if (resultCode == RESULT_OK && data != null) {
+//
+//                    ArrayList<String> result = data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
+//
+//                    txvResult.setText(result.get(0));
+//
+//
+//                }
+//                break;
+//        }
     }
 
 

@@ -23,7 +23,7 @@ import io.particle.android.sdk.utils.Async;
 
 public class MainActivity extends AppCompatActivity {
     private TextView txvResult;
-
+String comp ;
     // MARK: Debug info
     private final String TAG="SMARTLIGHT";
 
@@ -167,36 +167,34 @@ public class MainActivity extends AppCompatActivity {
                 // put your logic here to talk to the particle
                 // --------------------------------------------
 
-                // what functions are "public" on the particle?
-                Log.d(TAG, "Availble functions: " + mDevice.getFunctions());
+        
+//                    txvResult.setText(result.get(0));
+//                    String comp = txvResult.getText().toString();
+
+                  //  if (comp == "turn lights on") {
+                        try {
 
 
-             //   List<String> functionParameters = new ArrayList<String>();
-//                ArrayList<String> result = data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
-                //functionParameters.add();
-                ArrayList<String> result = data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
+                            //   if (result.get(0).contains("turn on ligths")  ){
 
-                try {
-
-                 //   if (result.get(0).contains("turn on ligths")  ){
-
-                    if (resultCode == RESULT_OK && data != null) {
+                            if (resultCode == RESULT_OK && data != null) {
 
 
-                        mDevice.callFunction("TurnOnLights", result);
+                                mDevice.callFunction("TurnOnLights", result);
 
 
-                        //  txvResult.setText(result.get(0));
+//                          txvResult.setText(result.get(0));
 
-                    }
+                            }
 
 
-                  //  }
 
-                } catch (ParticleDevice.FunctionDoesNotExistException e1) {
-                    e1.printStackTrace();
+
+                        } catch (ParticleDevice.FunctionDoesNotExistException e1) {
+                            e1.printStackTrace();
+                        }
+
                 }
-
 
                 return -1;
             }
@@ -229,6 +227,8 @@ public class MainActivity extends AppCompatActivity {
 //                }
 //                break;
 //        }
+
+
     }
 
 

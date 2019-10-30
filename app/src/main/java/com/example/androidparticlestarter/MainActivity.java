@@ -157,6 +157,12 @@ String comp ;
 
 
 
+
+
+
+
+
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -167,34 +173,99 @@ String comp ;
                 // put your logic here to talk to the particle
                 // --------------------------------------------
 
-        
-//                    txvResult.setText(result.get(0));
+                // what functions are "public" on the particle?
+                Log.d(TAG, "Availble functions: " + mDevice.getFunctions());
+
+
+                //   List<String> functionParameters = new ArrayList<String>();
+//                ArrayList<String> result = data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
+                //functionParameters.add();
+                    switch (requestCode) {
+                        case 10:
+
+                    if (resultCode == RESULT_OK && data != null) {
+
+                    ArrayList<String> result = data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
+                    try{
+                    txvResult.setText(result.get(0));
+                    }
+                    catch (Exception e){
+                        Log.d(TAG, "callApi: CANNOT ASSAIGN");
+                    }
 //                    String comp = txvResult.getText().toString();
 
-                  //  if (comp == "turn lights on") {
-                        try {
+                       if (txvResult.getText().toString().equals("on")) {
+
+                           try {
 
 
-                            //   if (result.get(0).contains("turn on ligths")  ){
-
-                            if (resultCode == RESULT_OK && data != null) {
+                               //   if (result.get(0).contains("turn on ligths")  ){
 
 
-                                mDevice.callFunction("TurnOnLights", result);
+                               mDevice.callFunction("TurnOnLights", result);
 
 
 //                          txvResult.setText(result.get(0));
 
+
+                               //  }
+
+                           } catch (ParticleDevice.FunctionDoesNotExistException e1) {
+                               e1.printStackTrace();
+                           }
+
+                       }
+                    else  if (txvResult.getText().toString().equals("off")) {
+
+                            try {
+
+
+                                //   if (result.get(0).contains("turn on ligths")  ){
+
+
+                                mDevice.callFunction("TurnOffLights", result);
+
+
+//                          txvResult.setText(result.get(0));
+
+
+                                //  }
+
+                            } catch (ParticleDevice.FunctionDoesNotExistException e1) {
+                                e1.printStackTrace();
                             }
 
-
-
-
-                        } catch (ParticleDevice.FunctionDoesNotExistException e1) {
-                            e1.printStackTrace();
                         }
+                       else  if (txvResult.getText().toString().equals("rainbow")) {
+
+                           try {
+
+
+                               //   if (result.get(0).contains("turn on ligths")  ){
+
+
+                               mDevice.callFunction("rainbow", result);
+
+
+//                          txvResult.setText(result.get(0));
+
+
+                               //  }
+
+                           } catch (ParticleDevice.FunctionDoesNotExistException e1) {
+                               e1.printStackTrace();
+                           }
+
+                       }
+
+
+
 
                 }
+
+
+                break;
+            }
 
                 return -1;
             }
@@ -215,7 +286,7 @@ String comp ;
 
 
 
-//        switch (requestCode) {
+ //       switch (requestCode) {
 //            case 10:
 //                if (resultCode == RESULT_OK && data != null) {
 //
@@ -227,8 +298,6 @@ String comp ;
 //                }
 //                break;
 //        }
-
-
     }
 
 
